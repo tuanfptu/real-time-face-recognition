@@ -2,10 +2,6 @@
 
 An educational real-time face-recognition pipeline combining face detection, ArcFace embeddings, cosine-similarity matching, and ByteTrack tracking.
 
-<p align="center">
-  <img src="./assets/face-recognition.gif" alt="Real-time face recognition demo" />
-</p>
-
 ## About this repository
 
 This repository is a study and customization project maintained by [tuanfptu](https://github.com/tuanfptu). It is based on and contains code from [vectornguyen76/face-recognition](https://github.com/vectornguyen76/face-recognition), created by **Vector Nguyễn**.
