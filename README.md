@@ -1,143 +1,109 @@
 # Real-Time Face Recognition
 
-   <p align="center">
-   <img src="./assets/face-recognition.gif" alt="Face Recognition" />
-   <br>
-   <em>Face Recognition</em>
-   </p>
+An educational real-time face-recognition pipeline combining face detection, ArcFace embeddings, cosine-similarity matching, and ByteTrack tracking.
 
-## Table of Contents
+<p align="center">
+  <img src="./assets/face-recognition.gif" alt="Real-time face recognition demo" />
+</p>
 
-- [Architecture](#architecture)
-- [How to use](#how-to-use)
-  - [Create Environment and Install Packages](#create-environment-and-install-packages)
-  - [Add new persons to datasets](#add-new-persons-to-datasets)
-- [Technology](#technology)
-  - [Face Detection](#face-detection)
-  - [Face Recognition](#face-recognition)
-  - [Face Tracking](#face-tracking)
-  - [Matching Algorithm](#matching-algorithm)
-- [Reference](#reference)
+## About this repository
 
-## Architecture
+This repository is a study and customization project maintained by [tuanfptu](https://github.com/tuanfptu). It is based on and contains code from [vectornguyen76/face-recognition](https://github.com/vectornguyen76/face-recognition), created by **Vector Nguyễn**.
 
-   <p align="center">
-   <img src="./assets/sequence-diagram.png" alt="Sequence Diagram" />
-   <br>
-   <em>Sequence Diagram</em>
-   </p>
+The original project provided the core architecture and implementation. This version packages that work as a privacy-safe, portable learning repository, with personal face datasets and large pretrained weights excluded from Git.
 
-## How to use
+This is not presented as an original implementation of the underlying face-recognition algorithms.
 
-### Create Environment and Install Packages
+## Pipeline
 
-```shell
+```text
+Camera / video
+      ↓
+Face detection (SCRFD, RetinaFace, or YOLOv5-face)
+      ↓
+Face alignment
+      ↓
+ArcFace embedding extraction
+      ↓
+Cosine-similarity identity matching
+      ↓
+ByteTrack multi-face tracking
+```
+
+## Features
+
+- Multiple face detectors: SCRFD, RetinaFace and YOLOv5-face
+- ArcFace feature extraction
+- Cosine-similarity identity matching
+- ByteTrack-based real-time tracking
+- Utilities for registering new people
+- Webcam and video inference
+
+## Installation
+
+Python 3.9 is recommended because this project uses an older PyTorch-compatible dependency set.
+
+```bash
 conda create -n face-dev python=3.9
-```
-
-```shell
 conda activate face-dev
-```
-
-```shell
 pip install torch==1.9.1+cpu torchvision==0.10.1+cpu torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
 pip install -r requirements.txt
 ```
 
-### Add new persons to datasets
+## Pretrained weights
 
-1. **Create a folder with the folder name being the name of the person**
+Large weight files are intentionally excluded from Git. Follow the instructions in:
 
-   ```
-   datasets/
-   ├── backup
-   ├── data
-   ├── face_features
-   └── new_persons
-       ├── name-person1
-       └── name-person2
-   ```
+- `face_detection/scrfd/weights/README.md`
+- `face_detection/yolov5_face/weights/README.md`
+- `face_recognition/arcface/weights/README.md`
+- `face_tracking/pretrained/README.md`
 
-2. **Add the person's photo in the folder**
+Place downloaded weights in the directories documented by those files.
 
-   ```
-   datasets/
-   ├── backup
-   ├── data
-   ├── face_features
-   └── new_persons
-       ├── name-person1
-       │   └── image1.jpg
-       │   └── image2.jpg
-       └── name-person2
-           └── image1.jpg
-           └── image2.jpg
-   ```
+## Registering a person
 
-3. **Run to add new persons**
+Create one directory per person under `datasets/new_persons/`:
 
-   ```shell
-   python add_persons.py
-   ```
+```text
+datasets/
+├── backup/
+├── data/
+├── face_features/
+└── new_persons/
+    ├── person_one/
+    │   ├── image1.jpg
+    │   └── image2.jpg
+    └── person_two/
+        └── image1.jpg
+```
 
-4. **Run to recognize**
+Generate the face database:
 
-   ```shell
-   python recognize.py
-   ```
+```bash
+python add_persons.py
+```
 
-## Technology
+Start recognition:
 
-### Face Detection
+```bash
+python recognize.py
+```
 
-1. **Retinaface**
+Do not commit face images or generated biometric embeddings. They are excluded through `.gitignore` by default.
 
-   - Retinaface is a powerful face detection algorithm known for its accuracy and speed. It utilizes a single deep convolutional network to detect faces in an image with high precision.
+## Main technologies
 
-2. **Yolov5-face**
-
-   - Yolov5-face is based on the YOLO (You Only Look Once) architecture, specializing in face detection. It provides real-time face detection with a focus on efficiency and accuracy.
-
-3. **SCRFD**
-   - SCRFD (Single-Shot Scale-Aware Face Detector) is designed for real-time face detection across various scales. It is particularly effective in detecting faces at different resolutions within the same image.
-
-### Face Recognition
-
-1. **ArcFace**
-
-   - ArcFace is a state-of-the-art face recognition algorithm that focuses on learning highly discriminative features for face verification and identification. It is known for its robustness to variations in lighting, pose, and facial expressions.
-
-   <p align="center">
-   <img src="https://user-images.githubusercontent.com/80930272/160270088-a3760d88-ebc8-4535-907e-6b684276755a.png" alt="ArcFace" />
-   <br>
-   <em>ArcFace</em>
-   </p>
-
-### Face Tracking
-
-1. **ByteTrack**
-
-   <p align="center">
-   <img src="./assets/bytetrack.png" alt="ByteTrack" />
-   <br>
-   <em>ByteTrack is a simple, fast and strong multi-object tracker.</em>
-   </p>
-
-### Matching Algorithm
-
-1. **Cosine Similarity Algorithm**
-
-   - The Cosine Similarity Algorithm is employed for matching faces based on the cosine of the angle between their feature vectors. It measures the similarity between two faces' feature representations, providing an effective approach for face recognition.
-
-   <p align="center">
-   <img src="https://user-images.githubusercontent.com/80930272/160270156-37fe3269-ca65-4692-a3b2-e9568b3876f8.png" alt="Cosine Similarity Algorithm" />
-   <br>
-   <em>Cosine Similarity Algorithm</em>
-   </p>
-
-## Reference
-
+- [SCRFD](https://github.com/deepinsight/insightface/tree/master/detection/scrfd)
+- [RetinaFace](https://arxiv.org/abs/1905.00641)
+- [YOLOv5-face](https://github.com/deepcam-cn/yolov5-face)
+- [ArcFace](https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch)
 - [ByteTrack](https://github.com/ifzhang/ByteTrack)
-- [Yolov5-face](https://github.com/deepcam-cn/yolov5-face)
-- [InsightFace - ArcFace](https://github.com/deepinsight/insightface/tree/master/recognition/arcface_torch)
-- [InsightFace-REST](https://github.com/SthPhoenix/InsightFace-REST)
+
+## Attribution and license
+
+The original implementation is copyright © 2022 Vector Nguyễn and is distributed under the MIT License. In accordance with that license, the original copyright and permission notice remain in [LICENSE.md](./LICENSE.md).
+
+The MIT License permits use, modification, and redistribution, but requires its copyright and permission notice to be retained in copies or substantial portions of the software. Repository ownership on GitHub does not transfer authorship of the original code.
+
+See the original repository: [vectornguyen76/face-recognition](https://github.com/vectornguyen76/face-recognition).
